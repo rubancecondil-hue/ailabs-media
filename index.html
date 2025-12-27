@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ailabs media - Premium digital marketing agency offering AI-driven web development, SEO, and branding solutions.">
+    <title>ailabs media | Digital Marketing & AI Solutions</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        },
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom Styles & Overrides */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Glassmorphism Navigation */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.6);
+        }
+
+        /* Hero Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card Hover Effects */
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Loader */
+        .loader {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid white;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 20px rgba(37, 211, 102, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #10B981; /* Emerald 500 */
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            transition: opacity 0.5s, bottom 0.5s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-dark-900 dark:text-slate-100 flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="bg-primary-600 p-2 rounded-lg text-white">
+                        <i data-lucide="cpu" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-heading font-bold text-2xl tracking-tight">ailabs media</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Home</a>
+                    <a href="#services" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Services</a>
+                    <a href="#about" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a>
+                    <a href="#contact" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors focus:outline-none">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+
+                    <a href="#contact" class="px-5 py-2.5 rounded-full bg-primary-600 text-white font-medium hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-500/30 text-sm">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="theme-toggle-mobile" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white dark:bg-dark-900 border-b border-slate-200 dark:border-slate-800 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+                <a href="#services" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
+                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">About</a>
+                <a href="#contact" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Contact</a>
+                <div class="pt-4">
+                    <a href="#contact" class="block w-full text-center px-5 py-3 rounded-lg bg-primary-600 text-white font-medium">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-primary-500/20 blur-3xl filter"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-purple-500/20 blur-3xl filter"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-sm font-semibold mb-6 border border-primary-100 dark:border-primary-800">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+                    </span>
+                    Future-Ready Digital Marketing
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-slate-900 dark:text-white leading-tight">
+                    Scale Your Business with <br>
+                    <span class="text-gradient">AI Intelligence</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+                    We blend creative strategy with advanced AI automation to deliver data-driven results for web, SEO, and branding.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#contact" class="px-8 py-4 rounded-full bg-primary-600 text-white font-bold text-lg shadow-lg shadow-primary-500/30 hover:bg-primary-700 hover:scale-105 transition-all">
+                        Book a Consultation
+                    </a>
+                    <a href="#services" class="px-8 py-4 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:scale-105 transition-all">
+                        Explore Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-white dark:bg-dark-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-base text-primary-600 font-semibold tracking-wide uppercase">Our Expertise</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+                    Comprehensive Digital Solutions
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-slate-500 dark:text-slate-400 mx-auto">
+                    From code to content, we optimize every touchpoint of your digital presence.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6">
+                        <i data-lucide="monitor" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Web Development</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        High-performance, responsive websites built with modern frameworks. We focus on speed, UX, and conversion optimization.
+                    </p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                    <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center text-green-600 dark:text-green-400 mb-6">
+                        <i data-lucide="bar-chart-2" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">SEO Optimization</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Data-driven SEO strategies to boost your organic rankings. We use AI tools to analyze trends and outperform competitors.
+                    </p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                    <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6">
+                        <i data-lucide="zap" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">AI Automation</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Streamline your workflow with custom chatbots, automated email marketing, and customer relationship management.
+                    </p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                    <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6">
+                        <i data-lucide="pen-tool" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Brand Identity</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Crafting memorable visual identities. Logo design, brand guidelines, and social media kits that tell your story.
+                    </p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                    <div class="w-14 h-14 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-600 dark:text-rose-400 mb-6">
+                        <i data-lucide="megaphone" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Social Marketing</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Engaging campaigns across Instagram, LinkedIn, and Facebook. We create content that stops the scroll.
+                    </p>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="service-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                    <div class="w-14 h-14 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center text-teal-600 dark:text-teal-400 mb-6">
+                        <i data-lucide="search" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Analytics & Insights</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Deep dive into user behavior. We translate complex data into actionable steps to grow your ROI.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-slate-900 dark:bg-black"></div>
+        <!-- Decorative blobs -->
+        <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-primary-600 rounded-full blur-3xl opacity-20"></div>
+        <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-20"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Contact Info -->
+                <div class="text-white">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Let's build something <br><span class="text-primary-400">extraordinary.</span></h2>
+                    <p class="text-slate-300 text-lg mb-10 leading-relaxed">
+                        Ready to elevate your digital presence? Reach out to us for a free consultation or audit of your current strategy.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-primary-600 transition-colors">
+                                <i data-lucide="mail" class="w-5 h-5 text-slate-300 group-hover:text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Email Us</p>
+                                <a href="mailto:rubancecondil@gmail.com" class="text-lg font-semibold hover:text-primary-400 transition-colors">rubancecondil@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-green-600 transition-colors">
+                                <i data-lucide=
